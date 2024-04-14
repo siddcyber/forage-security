@@ -48,6 +48,15 @@ def exercise_7(df):
     return gk
 
 
+# Create graphs for the following.
+#
+# Transaction types bar chart, Transaction types split by fraud bar chart
+# Origin account balance delta v. Destination account balance delta scatter plot for Cash Out transactions
+# Ensure that the graphs have the following:
+# Title
+# Labeled Axes
+# The function plot the graph and then return a string containing a short description explaining the relevance of
+# the chart.
 def visual_1(df):
     def transaction_counts(df):
         return df['type'].value_counts()
@@ -64,12 +73,14 @@ def visual_1(df):
     axs[1].set_title('Transaction Types Split by Fraud')
     axs[1].set_xlabel('transaction type')
     axs[1].set_ylabel('Count')
-    fig.suptitle('Visual 1')
+    fig.suptitle('Transaction Types Analysis')
     fig.tight_layout(rect=[0, 0.03, 1, 0.95])
     for ax in axs:
         for p in ax.patches:
             ax.annotate(p.get_height(), (p.get_x(), p.get_height()))
-    return plt.show()
+    return 'The bar chart on the top represents the distribution of different transaction types. The bar chart at the' \
+           ' bottom breaks down the transaction types further, showing how many of them were flagged as fraud (orange)' \
+           ' and how many were not (blue).'
 
 
 def visual_2(df):
@@ -86,7 +97,6 @@ def visual_custom(df):
 
 # Read the dataset (`transactions.csv`) as a Pandas dataframe. Note that the first row of the CSV contains the column
 # names.
-# df = exercise_0('transactions.csv')
 print(exercise_1(exercise_0('transactions.csv')))
 
 visual_1(exercise_0('transactions.csv'))
