@@ -22,7 +22,7 @@ def exercise_2(df, k):
 
 # Return a random sample of k rows from the dataframe.
 def exercise_3(df, k):
-    return (df.sample(k))
+    return df.sample(k)
 
 
 # Return a list of the unique transaction types.
@@ -62,7 +62,6 @@ def visual_1(df):
         return df['type'].value_counts()
 
     def transaction_counts_split_by_fraud(df):
-        df['isFraud'] = df['isFraud'].replace({0: 'Not Fraud', 1: 'Fraud'})
         return df.groupby(['type', 'isFraud']).size().unstack(fill_value=0)
 
     fig, axs = plt.subplots(2, figsize=(6, 10))
@@ -102,16 +101,31 @@ def visual_2(df):
            'from the origin account to the destination account.'
 
 
+#  aggregate of values grouped by types and split by fraud
 def exercise_custom(df):
-    pass
+    # df['isFraud'] = df['isFraud'].replace({0: 'Not Fraud', 1: 'Fraud'})
+    data = df.groupby(['type', 'isFraud'])['amount'].mean()
+    data = data.unstack(level='isFraud')
+    return data
 
 
+#  aggregate of values grouped by types and split by fraud bar graph
 def visual_custom(df):
-    pass
+    fig = df.plot( kind='bar')
+    fig.set_title('Mean Transaction Amount by Type and Fraud Status')
+    fig.set_xlabel('transaction type')
+    fig.set_ylabel('Mean transaction Amount')
+    fig.legend(title='Is Fraud', labels=['Not Fraud', 'Fraud'])
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+    return plt.show()
+    # return 'This visualization allows us to compare the average transaction amounts across different transaction types and see how fraud status influences these averages.'
 
 
 # Read the dataset (`transactions.csv`) as a Pandas dataframe. Note that the first row of the CSV contains the column
 # names.
-df  = exercise_0('transactions.csv')
+df = exercise_0('transactions.csv')
 print(exercise_1(df))
 print(exercise_4(df))
+print(exercise_custom(df))
+visual_custom(exercise_custom(df))
