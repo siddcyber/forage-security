@@ -79,21 +79,27 @@ def visual_1(df):
     for ax in axs:
         for p in ax.patches:
             ax.annotate(p.get_height(), (p.get_x(), p.get_height()))
-    return 'The bar chart on the top represents the distribution of different transaction types. The bar chart at the' \
-           ' bottom breaks down the transaction types further, showing how many of them were flagged as fraud (orange)' \
-           ' and how many were not (blue).'
+    return 'The bar chart on the top represents the distribution of different transaction types. The bar chart at the ' \
+           'bottom breaks down the transaction types further, showing how many of them were flagged as fraud (orange) ' \
+           'and how many were not (blue). '
 
 
+# Origin account balance delta v. Destination account balance delta scatter plot for Cash Out transactions
 def visual_2(df):
     def query(df):
-        # TO DO
-        pass
-    plot = query(df).plot.scatter(x='TODO',y='TODO')
-    plot.set_title('TODO')
+        cashOut = df[df['type'] == 'CASH_OUT'].copy()
+        cashOut.loc[:, 'orig_balance_delta'] = cashOut['oldbalanceOrg'] - cashOut['newbalanceOrig']
+        cashOut.loc[:, 'dest_balance_delta'] = cashOut['oldbalanceDest'] - cashOut['newbalanceDest']
+        return cashOut
+
+    plot = query(df).plot.scatter(x='orig_balance_delta', y='dest_balance_delta')
+    plot.set_title('Origin account balance delta v. Destination account balance delta for Cash Out transactions')
     plot.set_xlim(left=-1e3, right=1e3)
     plot.set_ylim(bottom=-1e3, top=1e3)
-    return 'TODO'
 
+    return 'This scatter plot illustrates the relationship between the balance delta of origin and destination ' \
+           'accounts for Cash Out transactions. Each point represents a transaction, showing the change in balance ' \
+           'from the origin account to the destination account.'
 
 
 def exercise_custom(df):
@@ -106,7 +112,6 @@ def visual_custom(df):
 
 # Read the dataset (`transactions.csv`) as a Pandas dataframe. Note that the first row of the CSV contains the column
 # names.
-print(exercise_1(exercise_0('transactions.csv')))
-
-# visual_1(exercise_0('transactions.csv'))
-visual_2(exercise_0('transactions.csv'))
+df  = exercise_0('transactions.csv')
+print(exercise_1(df))
+print(exercise_4(df))
