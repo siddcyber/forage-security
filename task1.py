@@ -62,6 +62,7 @@ def visual_1(df):
         return df['type'].value_counts()
 
     def transaction_counts_split_by_fraud(df):
+        df['isFraud'] = df['isFraud'].replace({0: 'Not Fraud', 1: 'Fraud'})
         return df.groupby(['type', 'isFraud']).size().unstack(fill_value=0)
 
     fig, axs = plt.subplots(2, figsize=(6, 10))
@@ -84,7 +85,15 @@ def visual_1(df):
 
 
 def visual_2(df):
-    pass
+    def query(df):
+        # TO DO
+        pass
+    plot = query(df).plot.scatter(x='TODO',y='TODO')
+    plot.set_title('TODO')
+    plot.set_xlim(left=-1e3, right=1e3)
+    plot.set_ylim(bottom=-1e3, top=1e3)
+    return 'TODO'
+
 
 
 def exercise_custom(df):
@@ -99,4 +108,5 @@ def visual_custom(df):
 # names.
 print(exercise_1(exercise_0('transactions.csv')))
 
-visual_1(exercise_0('transactions.csv'))
+# visual_1(exercise_0('transactions.csv'))
+visual_2(exercise_0('transactions.csv'))
